@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Albert Abrarov — DevOps Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #0d1117;
+      --surface:      #161b22;
+      --surface-2:    #21262d;
+      --border:       #30363d;
+      --text:         #c9d1d9;
+      --text-muted:   #8b949e;
+      --accent:       #58a6ff;
+      --accent-dim:   rgba(88, 166, 255, 0.12);
+      --green:        #3fb950;
+      --orange:       #d29922;
+      --font-mono:    'JetBrains Mono', monospace;
+      --font-sans:    'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── LAYOUT ── */
+    section { padding: 5rem 0; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      background-image:
+        radial-gradient(circle at 20% 60%, rgba(88,166,255,.06) 0%, transparent 55%),
+        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+      background-size: auto, 50px 50px, 50px 50px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: .85rem;
+      color: var(--green);
+      margin-bottom: 1rem;
+    }
+    .hero-eyebrow::before { content: '> '; opacity: .6; }
+
+    .hero-name {
+      font-size: 3.25rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #e6edf3;
+      margin-bottom: .4rem;
+    }
+
+    .hero-title {
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title strong { color: var(--accent); font-weight: 600; }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: .95rem;
+      line-height: 1.75;
+      margin-bottom: 1.75rem;
+      max-width: 460px;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: .65rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: .28rem .85rem;
+      font-size: .78rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .pulse {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    .hero-cta { display: flex; gap: .9rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .6rem 1.4rem;
+      border-radius: 6px;
+      font-size: .875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .18s;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--accent); color: #0d1117; border: none; }
+    .btn-primary:hover { background: #79b8ff; text-decoration: none; }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+    /* ── TERMINAL ── */
+    .terminal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .7rem 1rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+    .dot-r { width:12px;height:12px;border-radius:50%;background:#ff5f57; }
+    .dot-y { width:12px;height:12px;border-radius:50%;background:#febc2e; }
+    .dot-g { width:12px;height:12px;border-radius:50%;background:#28c840; }
+
+    .terminal-title {
+      margin: 0 auto;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-muted);
+    }
+
+    .terminal-body {
+      padding: 1.1rem 1.4rem 1.4rem;
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      line-height: 1.85;
+      min-height: 290px;
+    }
+
+    .t-prompt { color: var(--accent); }
+    .t-sep    { color: var(--text-muted); }
+    .t-cmd    { color: var(--text); }
+    .t-out    { display: block; color: var(--text-muted); }
+    .t-out.ok { color: var(--green); }
+
+    .cursor {
+      display: inline-block;
+      width: 7px; height: 1em;
+      background: var(--accent);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── SKILLS ── */
+    #skills {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .skill-group {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.25rem;
+      transition: border-color .2s;
+    }
+    .skill-group:hover { border-color: rgba(88,166,255,.45); }
+
+    .skill-group-title {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .65rem;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .45rem; }
+
+    .tag {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: .22rem .6rem;
+      border-radius: 4px;
+      font-size: .78rem;
+      font-family: var(--font-mono);
+      transition: all .18s;
+      cursor: default;
+    }
+    .tag:hover {
+      background: var(--accent-dim);
+      border-color: rgba(88,166,255,.45);
+      color: var(--accent);
+    }
+
+    /* ── EXPERIENCE ── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10px; bottom: 10px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .timeline-item { position: relative; margin-bottom: 3rem; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.38rem; top: 8px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(88,166,255,.5);
+      border: 2px solid var(--bg);
+    }
+
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-bottom: .35rem;
+    }
+    .timeline-company { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: .2rem; }
+    .timeline-role {
+      color: var(--accent);
+      font-size: .85rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-mono);
+    }
+
+    .achievements { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .achievements li {
+      position: relative;
+      padding-left: 1.2rem;
+      color: var(--text-muted);
+      font-size: .875rem;
+      line-height: 1.65;
+    }
+    .achievements li::before { content: '▸'; position: absolute; left: 0; color: var(--green); }
+    .achievements strong { color: var(--text); }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      transition: all .22s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .25s;
+    }
+    .project-card:hover {
+      border-color: rgba(88,166,255,.4);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      gap: .7rem;
+      margin-bottom: .65rem;
+    }
+    .project-icon { font-size: 1.35rem; line-height: 1; flex-shrink: 0; margin-top: .1rem; }
+    .project-name { font-weight: 600; font-size: .975rem; color: var(--text); }
+    .project-date { font-family: var(--font-mono); font-size: .73rem; color: var(--text-muted); }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: .855rem;
+      line-height: 1.65;
+      margin-bottom: .9rem;
+    }
+
+    .project-stats {
+      display: flex;
+      gap: .45rem;
+      flex-wrap: wrap;
+      margin-bottom: .75rem;
+    }
+    .stat {
+      display: inline-flex;
+      align-items: center;
+      gap: .25rem;
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: .76rem;
+      background: rgba(63,185,80,.1);
+      border: 1px solid rgba(63,185,80,.2);
+      border-radius: 4px;
+      padding: .15rem .5rem;
+    }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .project-tags .tag { font-size: .74rem; padding: .15rem .5rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      text-align: center;
+    }
+
+    .footer-title { font-size: 1.6rem; font-weight: 700; color: var(--text); }
+    .footer-sub   { color: var(--text-muted); font-size: .9rem; }
+
+    .footer-links {
+      display: flex;
+      gap: .9rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: .78rem;
+      font-family: var(--font-mono);
+      margin-top: .5rem;
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .hero-grid      { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-name      { font-size: 2.4rem; }
+      .skills-grid    { grid-template-columns: 1fr; }
+      .projects-grid  { grid-template-columns: 1fr; }
+      .nav-links      { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo"><span>AA</span>.dev</span>
+  <ul class="nav-links">
+    <li><a href="#skills">Навыки</a></li>
+    <li><a href="#experience">Опыт</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#contact">Контакт</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <div>
+        <div class="hero-eyebrow">Открыт к новым предложениям</div>
+        <h1 class="hero-name">Albert<br>Abrarov</h1>
+        <p class="hero-title"><strong>DevOps Engineer</strong></p>
+        <p class="hero-desc">
+          3+ года в продакшн-инфраструктуре государственных систем Татарстана.
+          Перевожу ручные операции в код: контейнеризация, IaC, CI/CD, автоматизация мониторинга.
+        </p>
+        <div class="hero-badges">
+          <span class="hero-badge"><span class="pulse"></span>Open to work</span>
+          <span class="hero-badge">📍 Казань → СПб</span>
+          <span class="hero-badge">⚡ 3+ лет продакшн</span>
+        </div>
+        <div class="hero-cta">
+          <a href="mailto:astronutx@mail.ru" class="btn btn-primary">✉ Написать мне</a>
+          <a href="#experience" class="btn btn-secondary">Посмотреть опыт →</a>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="dot-r"></span>
+          <span class="dot-y"></span>
+          <span class="dot-g"></span>
+          <span class="terminal-title">albert@devops:~</span>
+        </div>
+        <div class="terminal-body" id="term">
+          <span class="cursor" id="cur"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">// stack</div>
+    <h2 class="section-title">Технический стек</h2>
+    <div class="skills-grid">
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Контейнеризация</div>
+        <div class="skill-tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Docker Compose</span>
+          <span class="tag">multi-stage builds</span>
+          <span class="tag">Docker Registry</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Оркестрация</div>
+        <div class="skill-tags">
+          <span class="tag">ArgoCD</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">Docker Swarm</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">IaC / Автоматизация</div>
+        <div class="skill-tags">
+          <span class="tag">Ansible</span>
+          <span class="tag">Bash</span>
+          <span class="tag">Python</span>
+          <span class="tag">Jinja2</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">CI/CD</div>
+        <div class="skill-tags">
+          <span class="tag">Jenkins</span>
+          <span class="tag">GitLab CI/CD</span>
+          <span class="tag">GitHub Actions</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Облака & Хранилища</div>
+        <div class="skill-tags">
+          <span class="tag">Yandex Cloud</span>
+          <span class="tag">AWS</span>
+          <span class="tag">GCP</span>
+          <span class="tag">MinIO</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Мониторинг</div>
+        <div class="skill-tags">
+          <span class="tag">Zabbix</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Prometheus</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Сети & Безопасность</div>
+        <div class="skill-tags">
+          <span class="tag">Nginx</span>
+          <span class="tag">WireGuard</span>
+          <span class="tag">nftables</span>
+          <span class="tag">SSL / TLS</span>
+          <span class="tag">Let's Encrypt</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-title">ОС & БД</div>
+        <div class="skill-tags">
+          <span class="tag">Ubuntu</span>
+          <span class="tag">Astra Linux</span>
+          <span class="tag">CentOS</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Redis</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">// work</div>
+    <h2 class="section-title">Опыт работы</h2>
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="timeline-date">Март 2023 — настоящее время · 3 года 3 месяца</div>
+        <div class="timeline-company">АО ЦИТ РТ — Казань</div>
+        <div class="timeline-role">Системный администратор Linux / DevOps</div>
+        <ul class="achievements">
+          <li>
+            <strong>Автоматизация SSL-инфраструктуры.</strong> Спроектировал систему автовыпуска
+            Let's Encrypt-сертификатов для кластера из двух Nginx-балансировщиков.
+            Certbot deploy hook синхронизирует ключи по SSH и перезагружает Nginx — работает
+            полностью автономно (cron 2 раза в сутки).
+          </li>
+          <li>
+            <strong>Умный алертинг Zabbix → Jira.</strong> Устранил alert fatigue команды:
+            заменил Telegram-уведомления о MinIO-хранилищах на автосоздание тикетов
+            с идемпотентной логикой. Устранил 100% шума нотификаций.
+          </li>
+          <li>
+            <strong>Контейнеризация Apache Airflow.</strong> Перевёл деплой кластера на Docker-стек,
+            написал Ansible Playbook для автоматического развёртывания приложений с БД
+            на чистые VPS — время настройки среды сократилось в разы.
+          </li>
+          <li>
+            <strong>Облачная инфраструктура Yandex Cloud.</strong> Развернул и администрирую
+            MTProto-прокси для Telegram, обеспечивающий стабильную работу
+            <strong>150+ сотрудников</strong>.
+          </li>
+          <li>
+            <strong>Импортозамещение (контракт с ГМП).</strong> Astra Linux (Common/Special),
+            Континент-АП, ЦКБА, Bitrix24 self-hosted, Jira, Confluence. NFS-сервер,
+            миграция данных без инцидентов.
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">// projects</div>
+    <h2 class="section-title">Проекты</h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">🔒</span>
+          <div>
+            <div class="project-name">Высоконагруженный VPN-сервер</div>
+            <div class="project-date">Февраль 2025 — настоящее время</div>
+          </div>
+        </div>
+        <p class="project-desc">
+          VPN на Xray-core (VLESS) с firewall на nftables, защитой от DNS/IPv6-утечек
+          и автоматическими бэкапами конфигурации через cron + rsync.
+        </p>
+        <div class="project-stats">
+          <span class="stat">👥 50 активных пользователей</span>
+          <span class="stat">📦 6 ТБ трафика / мес</span>
+        </div>
+        <div class="project-tags">
+          <span class="tag">Xray-core</span>
+          <span class="tag">VLESS</span>
+          <span class="tag">nftables</span>
+          <span class="tag">Ubuntu</span>
+          <span class="tag">rsync</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">⚡</span>
+          <div>
+            <div class="project-name">Отказоустойчивый веб-сервис</div>
+            <div class="project-date">Сентябрь — Декабрь 2024 · Фриланс</div>
+          </div>
+        </div>
+        <p class="project-desc">
+          Инфраструктура стартапа: multi-stage deployment (dev/stage/prod), кэширование слоёв
+          Docker-образов сократило деплой с 10 до 2 минут.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Ansible</span>
+          <span class="tag">Nginx LB</span>
+          <span class="tag">GitLab CI/CD</span>
+          <span class="tag">AWS / GCP</span>
+          <span class="tag">WireGuard</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">🐳</span>
+          <div>
+            <div class="project-name">Flask + Nginx + PostgreSQL IaC</div>
+            <div class="project-date">2025 · Pet project</div>
+          </div>
+        </div>
+        <p class="project-desc">
+          Ansible-роли для полного деплоя веб-приложения на чистый VPS одной командой.
+          Jinja2-шаблон .env, graceful reload через handlers, Docker Registry-зеркала.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Ansible</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Nginx</span>
+          <span class="tag">Flask</span>
+          <span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">🖥</span>
+          <div>
+            <div class="project-name">School 21 — DevOps-практика</div>
+            <div class="project-date">Ноябрь 2024</div>
+          </div>
+        </div>
+        <p class="project-desc">
+          Сеть из 5 виртуальных машин (3 узла + 2 роутера). Мониторинг,
+          централизованное логирование, автоматизированный deployment с Docker.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Linux networking</span>
+          <span class="tag">Мониторинг</span>
+          <span class="tag">Логирование</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="section-label">// contact</div>
+      <div class="footer-title">Открыт к предложениям</div>
+      <p class="footer-sub">Переезжаю в Санкт-Петербург · Рассматриваю офис и удалённый формат</p>
+      <div class="footer-links">
+        <a href="mailto:astronutx@mail.ru" class="btn btn-primary">✉ astronutx@mail.ru</a>
+        <a href="tel:+79874066936" class="btn btn-secondary">📞 +7 (987) 406-69-36</a>
+      </div>
+      <div class="footer-copy">Albert Abrarov · 2026</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── TERMINAL TYPING ── */
+  const term = document.getElementById('term');
+  const cur  = document.getElementById('cur');
+
+  const P = '<span class="t-prompt">albert</span>'
+          + '<span class="t-sep">@devops:~</span>'
+          + '<span class="t-prompt">$</span> ';
+
+  const steps = [
+    { k: 'cmd', t: 'whoami' },
+    { k: 'out', t: 'Albert Abrarov' },
+    { k: 'cmd', t: 'cat role.txt' },
+    { k: 'out', t: 'DevOps Engineer  ·  3+ лет в продакшн' },
+    { k: 'cmd', t: 'echo $STATUS' },
+    { k: 'out', t: '✅  Open to work  →  Санкт-Петербург', ok: true },
+    { k: 'cmd', t: 'ansible-playbook hire-me.yml' },
+    { k: 'out', t: '[OK]  опыт: 3+ лет production    ✓', ok: true },
+    { k: 'out', t: '[OK]  стек: Docker Ansible Nginx  ✓', ok: true },
+    { k: 'out', t: '[OK]  готов к переезду            ✓', ok: true },
+    { k: 'end' },
+  ];
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  async function type(text, el, spd = 48) {
+    for (const ch of text) {
+      el.textContent += ch;
+      await sleep(spd + Math.random() * 28);
+    }
+  }
+
+  async function runTerm() {
+    await sleep(700);
+    for (const s of steps) {
+      if (s.k === 'cmd') {
+        const row = document.createElement('div');
+        row.innerHTML = P;
+        const cmd = document.createElement('span');
+        cmd.className = 't-cmd';
+        row.appendChild(cmd);
+        term.insertBefore(row, cur);
+        await type(s.t, cmd, 50);
+        await sleep(280);
+      } else if (s.k === 'out') {
+        const row = document.createElement('span');
+        row.className = 't-out' + (s.ok ? ' ok' : '');
+        row.textContent = s.t;
+        term.insertBefore(row, cur);
+        await sleep(110);
+      } else if (s.k === 'end') {
+        const row = document.createElement('div');
+        row.innerHTML = P;
+        row.appendChild(cur);
+        term.appendChild(row);
+      }
+    }
+  }
+
+  runTerm();
+
+  /* ── SCROLL REVEAL ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 75 + 'ms';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
